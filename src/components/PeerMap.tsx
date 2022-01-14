@@ -23,6 +23,7 @@ export const PeerMap = (props: { cid: string, cluster: Cluster }) => {
 
 	useEffect(() => {
 		reload();
+		//es-lint-disable-next-line react/exhaustive-deps
 	}, []);
 
 	const getStatusColor = (peer: any): string => peer.error !== '' ? 'red' :

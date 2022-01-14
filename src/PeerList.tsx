@@ -55,19 +55,4 @@ export const PeerList = (props: { cluster: Cluster }) => {
 			</Table>
 		</CardContent>
 	</Card>;
-	return <div>
-		<button onClick={() => reload()}>Refresh</button>
-		<ul>
-			{peers.map(p => <li>
-				<p>{p.peername}</p>
-				<ul>
-					<li>ID: {p.id}</li>
-					<li>IPFS ID: {p.ipfs.id}</li>
-					<li>Version: {p.version}</li>
-				</ul>
-			</li>)}
-		</ul>
-		{/*<pre>{JSON.stringify(peers, null, 2)}</pre>*/}
-	</div>;
-	;
 };

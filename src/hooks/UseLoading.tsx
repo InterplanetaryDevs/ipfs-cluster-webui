@@ -9,7 +9,7 @@ export function useLoading(): [boolean, (promise: Promise<any>) => Promise<any>]
 		return promise.finally(() => {
 			setIsLoading(false);
 		});
-	}, []);
+	}, [isLoading]);
 
 	return [isLoading, load];
 }

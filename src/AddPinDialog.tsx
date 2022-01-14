@@ -1,30 +1,23 @@
-import AddIcon from '@mui/icons-material/Add';
-import {Card, IconButton} from '@mui/material';
+import {Card, CardContent, CardHeader} from '@mui/material';
 import {Cluster} from '@nftstorage/ipfs-cluster';
-import {useState} from 'react';
+import {PinForm} from './components/PinForm';
 
 export const AddPinDialog = (props: { cluster: Cluster }) => {
-	const [cid, setCid] = useState('');
-	const [name, setName] = useState('');
-
-	const addPin = () => {
-		props.cluster.pin(cid, {
-			name: name,
+	const addPin = (pin: any) => {
+		props.cluster.pin(pin.cid, {
+			name: pin.name,
 		})
 			.then(r => {
 				//yay
-				console.log('pinned', cid);
+				console.log('pinned', pin.cid);
 			})
 			.catch(alert);
 	};
 
 	return <Card>
-		Cid*:
-		<input onChange={(e) => setCid(e.target.value)} value={cid}/>
-		<br/>
-		Name:
-		<input onChange={(e) => setName(e.target.value)} value={name}/>
-		<br/>
-		<IconButton onClick={() => addPin()}><AddIcon/></IconButton>
+		<CardHeader title={'Add new pin'}/>
+		<CardContent>
+			<PinForm onSubmit={addPin}/>
+		</CardContent>
 	</Card>;
 };

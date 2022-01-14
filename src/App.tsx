@@ -1,4 +1,4 @@
-import {Tab, Tabs} from '@mui/material';
+import {Tab, Tabs, AppBar, Toolbar, Container} from '@mui/material';
 import {Cluster} from '@nftstorage/ipfs-cluster';
 import React, {useMemo, useState} from 'react';
 import {AddPinDialog} from './AddPinDialog';
@@ -11,21 +11,32 @@ function App() {
 	const [tab, setTab] = useState(0);
 
 	return cluster ? <div>
-		<Tabs value={tab} onChange={(e, v) => setTab(v)}>
-			<Tab label={'Pins'}/>
-			<Tab label={'Peers'}/>
-			<Tab label={'Identity'}/>
-		</Tabs>
-		<TabPanel index={0} value={tab}>
-			<AddPinDialog cluster={cluster}/>
-			<PinList cluster={cluster}/>
-		</TabPanel>
-		<TabPanel index={1} value={tab}>
-			<PeerList cluster={cluster}/>
-		</TabPanel>
-		<TabPanel index={2} value={tab}>
-			<IdentityDisplay cluster={cluster}/>
-		</TabPanel>
+		<AppBar>
+			<Container>
+				<Toolbar>
+					<Tabs value={tab} onChange={(e, v) => setTab(v)}>
+						<Tab label={'Pins'}/>
+						<Tab label={'Peers'}/>
+						<Tab label={'Identity'}/>
+					</Tabs>
+				</Toolbar>
+			</Container>
+		</AppBar>
+		<div style={{height: 80}} />
+		<Container>
+			<TabPanel index={0} value={tab}>
+				<AddPinDialog cluster={cluster}/>
+				<div style={{height: 15}} />
+				<PinList cluster={cluster}/>
+			</TabPanel>
+			<TabPanel index={1} value={tab}>
+				<PeerList cluster={cluster}/>
+			</TabPanel>
+			<TabPanel index={2} value={tab}>
+				<IdentityDisplay cluster={cluster}/>
+			</TabPanel>
+		</Container>
+		<div style={{height: 15}} />
 	</div> : <p>Loading...</p>;
 }
 

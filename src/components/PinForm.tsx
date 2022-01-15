@@ -1,6 +1,7 @@
 import SaveIcon from '@mui/icons-material/Save';
 import {IconButton} from '@mui/material';
-import {useCallback, useState} from 'react';
+import {useSnackbar} from 'notistack';
+import {useState} from 'react';
 
 export interface PinFormProps {
 	onSubmit: (pin: any) => void;
@@ -11,12 +12,12 @@ export const PinForm = (props: PinFormProps) => {
 	const [cid, setCid] = useState(props.values?.cid['/'] ?? '');
 	const [name, setName] = useState(props.values?.name ?? '');
 
-	const submit = useCallback(() => {
+	const submit = () => {
 		props.onSubmit({
 			cid: cid,
 			name: name,
 		});
-	}, [props.onSubmit]);
+	};
 
 
 	return <div>

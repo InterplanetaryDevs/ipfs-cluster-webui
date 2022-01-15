@@ -1,17 +1,21 @@
 import {Card, CardContent, CardHeader} from '@mui/material';
 import {Cluster} from '@nftstorage/ipfs-cluster';
+import {useSnackbar} from 'notistack';
 import {PinForm} from './components/PinForm';
 
 export const AddPinDialog = (props: { cluster: Cluster }) => {
+	const {enqueueSnackbar} = useSnackbar();
+
 	const addPin = (pin: any) => {
 		props.cluster.pin(pin.cid, {
 			name: pin.name,
 		})
 			.then(r => {
-				//yay
-				console.log('pinned', pin.cid);
+				enqueueSnackbar(`Pin Added`, {variant: 'success'});
 			})
-			.catch(alert);
+			.catch(e => {
+				enqueueSnackbar(`Error: ${e}`, {variant: 'error'});
+			});
 	};
 
 	return <Card>

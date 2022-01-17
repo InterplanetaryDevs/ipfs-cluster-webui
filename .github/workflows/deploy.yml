@@ -13,6 +13,8 @@ jobs:
   sync:
     name: Verify and sync data to IPFS
     runs-on: ubuntu-latest
+    outputs:
+      cid: ${{ steps.upload.outputs.cidv1 }}
 
     steps:
       - name: Checkout repo
@@ -47,4 +49,4 @@ jobs:
         with:
           token: ${{ secrets.DUCKDNS_TOKEN }}
           domain: cluster-webui
-          cid: ${{ needs.sync.outputs.cidv1 }}
+          cid: ${{ needs.sync.outputs.cid }}

@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Generate build artifact
-        run: npm run build
+        run: CI=false npm run build
 
       - name: Sync to IPFS
         id: upload

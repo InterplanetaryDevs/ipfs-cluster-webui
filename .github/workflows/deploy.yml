@@ -21,8 +21,11 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
 
+      - name: Install dependencies
+        run: npm install
+
       - name: Generate build artifact
-        run: npm build
+        run: npm run build
 
       - name: Sync to IPFS
         id: upload

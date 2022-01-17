@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CD
+name: CI/CD
 
 # Controls when the workflow will run
 on:
@@ -36,3 +36,15 @@ jobs:
           #cloudflare-secret: ${{ secrets.CLOUDFLARE_SECRET }}
           #record-domain: example.com
           #record-name: _dnslink.app
+  dnslink:
+    name: Update dnslink record
+    runs-on: ubuntu-latest
+    needs: sync
+
+    steps:
+      - name: Update record
+        uses: undyingwraith/actions-duckdns-dnslink@master
+        with:
+          token: ${{ secrets.DUCKDNS_TOKEN }}
+          domain: cluster-webui
+          cid: ${{ needs.sync.outputs.cidv1 }}

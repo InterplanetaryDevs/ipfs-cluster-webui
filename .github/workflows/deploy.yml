@@ -1,0 +1,38 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CD
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+jobs:
+  sync:
+    name: Verify and sync data to IPFS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Generate build artifact
+        run: npm build
+
+      - name: Sync to IPFS
+        id: upload
+        uses: nymmrx/ipfs-deploy@master
+        with:
+          path: "./build"
+          pin-name: My Awesome Project
+          pinata-key: ${{ secrets.PINATA_KEY }}
+          pinata-secret: ${{ secrets.PINATA_SECRET }}
+          #cloudflare-zone-id: ${{ secrets.CLOUDFLARE_ZONE }}
+          #cloudflare-secret: ${{ secrets.CLOUDFLARE_SECRET }}
+          #record-domain: example.com
+          #record-name: _dnslink.app

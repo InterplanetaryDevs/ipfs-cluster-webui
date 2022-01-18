@@ -1,7 +1,7 @@
 import {Dialog, DialogContent, DialogTitle} from '@mui/material';
 import {Cluster} from '@nftstorage/ipfs-cluster';
 import {useSnackbar} from 'notistack';
-import {usePinActions} from '../PinActions';
+import {useApi} from '../context/ApiContext';
 import {PinType} from '../types/PinType';
 import {PinForm} from './PinForm';
 
@@ -12,12 +12,12 @@ export interface PinDialogProps {
 }
 
 export const PinDialog = (props: PinDialogProps) => {
-	const pinActions = usePinActions(props.cluster);
 	const {enqueueSnackbar} = useSnackbar();
+	const api = useApi()
 
 	const updatePin = (pin: any) => {
 		const {cid, ...pinOptions} = pin;
-		pinActions.update(props.pin?.cid['/'], cid, pinOptions)
+		api.update(props.pin?.cid['/'], cid, pinOptions)
 			.then(r => {
 				props.onClose && props.onClose();
 				enqueueSnackbar(`Pin updated`, {variant: 'success'})

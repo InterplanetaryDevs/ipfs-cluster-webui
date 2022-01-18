@@ -1602,11 +1602,6 @@
     prop-types "^15.7.2"
     react-is "^17.0.2"
 
-"@nftstorage/ipfs-cluster@^3.4.3":
-  version "3.4.3"
-  resolved "https://registry.yarnpkg.com/@nftstorage/ipfs-cluster/-/ipfs-cluster-3.4.3.tgz#d29566d062cab187e26694ff337d105e8c2d3228"
-  integrity sha512-SgqXQFpeOy+cR0NCxaNKuXTfCG2j+xGmzEgHDwsQZv/kriHZQPPPUJ8crekKR/Y8IZS59GUmz+vJ+CGQnmoHMg==
-
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"

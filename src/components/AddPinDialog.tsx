@@ -1,13 +1,14 @@
 import {Card, CardContent, CardHeader} from '@mui/material';
-import {Cluster} from '@nftstorage/ipfs-cluster';
 import {useSnackbar} from 'notistack';
-import {PinForm} from './components/PinForm';
+import {useApi} from '../context/ApiContext';
+import {PinForm} from './PinForm';
 
-export const AddPinDialog = (props: { cluster: Cluster }) => {
+export const AddPinDialog = (props: any) => {
 	const {enqueueSnackbar} = useSnackbar();
+	const api = useApi();
 
 	const addPin = (pin: any) => {
-		props.cluster.pin(pin.cid, {
+		api.add(pin.cid, {
 			name: pin.name,
 		})
 			.then(r => {

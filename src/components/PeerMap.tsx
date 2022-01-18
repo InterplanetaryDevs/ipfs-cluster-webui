@@ -2,29 +2,27 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {Accordion, AccordionDetails, AccordionSummary, CircularProgress, Typography} from '@mui/material';
 import {Cluster} from '@nftstorage/ipfs-cluster';
 import {SyntheticEvent, useEffect, useState} from 'react';
+import {useApi} from '../context/ApiContext';
 import {useLoading} from '../hooks/UseLoading';
-import {usePinActions} from '../PinActions';
 
 export const PeerMap = (props: { cid: string, cluster: Cluster }) => {
 	const [expanded, setExpanded] = useState<string | false>(false);
 	const [status, setStatus] = useState<any>();
 	const [isLoading, load] = useLoading();
-	const pinActions = usePinActions(props.cluster);
+	const api = useApi()
 
 	const handleChange = (panel: string) => (event: SyntheticEvent, isExpanded: boolean) => {
 		setExpanded(isExpanded ? panel : false);
 	};
 
 	const reload = () => {
-		load(pinActions.status(props.cid))
+		load(api.status(props.cid))
 			.then(setStatus)
 			.catch(console.error);
 	};
 
-	useEffect(() => {
-		reload();
-		//es-lint-disable-next-line react/exhaustive-deps
-	}, []);
+	//eslint-disable-next-line react-hooks/exhaustive-deps
+	useEffect(reload, []);
 
 	const getStatusColor = (peer: any): string => peer.error !== '' ? 'red' :
 		peer.status === 'pinned' ? 'green' :

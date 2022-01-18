@@ -15,29 +15,33 @@ import {
 	TableHead,
 	TableRow,
 } from '@mui/material';
-import {Cluster} from '@nftstorage/ipfs-cluster';
+import {useSnackbar} from 'notistack';
 import {useEffect, useState} from 'react';
-import {PeerMap} from './components/PeerMap';
-import {PinDialog} from './components/PinDialog';
-import {useLoading} from './hooks/UseLoading';
-import {usePinActions} from './PinActions';
+import {useApi} from '../context/ApiContext';
+import {PeerMap} from './PeerMap';
+import {PinDialog} from './PinDialog';
+import {useLoading} from '../hooks/UseLoading';
 
-export const PinList = (props: { cluster: Cluster }) => {
+export const PinList = (props: any) => {
 	const [pins, setPins] = useState<any[]>([]);
 	const [editing, setEditing] = useState<any>();
-	const pinActions = usePinActions(props.cluster);
 
+	const {enqueueSnackbar} = useSnackbar()
+	const api = useApi()
 	const [isLoading, load] = useLoading();
 
 	const reload = () => {
-		load(pinActions.getList())
+		load(api.getList())
 			.then(r => {
 				setPins(r);
 				console.log(r);
 			})
-			.catch(alert);
+			.catch(e => {
+				enqueueSnackbar(`Error: ${e}`, {variant:'error'})
+			});
 	};
 
+	//eslint-disable-next-line react-hooks/exhaustive-deps
 	useEffect(reload, []);
 
 	return <>
@@ -69,7 +73,7 @@ export const PinList = (props: { cluster: Cluster }) => {
 									<IconButton
 										color={'error'}
 										onClick={() => {
-											load(pinActions.remove(pin.cid['/']))
+											load(api.remove(pin.cid['/']))
 												.then(() => {
 													console.log('deleted');
 													return reload();

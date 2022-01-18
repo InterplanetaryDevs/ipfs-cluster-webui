@@ -3,30 +3,35 @@ import {
 	Card,
 	CardActions,
 	CardContent,
-	CardHeader, CircularProgress,
+	CardHeader,
+	CircularProgress,
 	IconButton,
-	Table, TableBody,
+	Table,
+	TableBody,
 	TableCell,
 	TableHead,
 	TableRow,
 } from '@mui/material';
-import {Cluster} from '@nftstorage/ipfs-cluster';
-import axios from 'axios';
+import {useSnackbar} from 'notistack';
 import {useEffect, useState} from 'react';
-import {useLoading} from './hooks/UseLoading';
+import {useApi} from '../context/ApiContext';
+import {useLoading} from '../hooks/UseLoading';
 
-export const PeerList = (props: { cluster: Cluster }) => {
+export const PeerList = (props: any) => {
 	const [peers, setPeers] = useState<any[]>([]);
 	const [isLoading, load] = useLoading();
+	const {enqueueSnackbar} = useSnackbar();
+	const api = useApi();
 
 	const reload = () => {
-		load(axios.get(props.cluster.url + 'peers'))
-			.then(r => {
-				setPeers(r.data);
-			})
-			.catch(alert);
+		load(api.getPeers())
+			.then(setPeers)
+			.catch(e => {
+				enqueueSnackbar(`Error: ${e}`, {variant: 'error'});
+			});
 	};
 
+	//eslint-disable-next-line react-hooks/exhaustive-deps
 	useEffect(reload, []);
 
 	return <Card>

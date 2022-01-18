@@ -9,23 +9,25 @@ import {
 	ListItem,
 	ListItemText,
 } from '@mui/material';
-import {Cluster} from '@nftstorage/ipfs-cluster';
-import axios from 'axios';
+import {useSnackbar} from 'notistack';
 import {useEffect, useState} from 'react';
 import ReplayIcon from '@mui/icons-material/Replay';
+import {useApi} from '../context/ApiContext';
 
-export const IdentityDisplay = (props: { cluster: Cluster }) => {
+export const IdentityDisplay = (props: any) => {
 	const [identity, setIdentity] = useState<any>();
+	const {enqueueSnackbar} = useSnackbar()
+	const api = useApi()
 
 	const reload = () => {
-		axios.get(props.cluster.url + 'id')
-			.then(r => {
-				setIdentity(r.data);
-			})
+		api.getId()
+			.then(setIdentity)
 			.catch(e => {
-				alert(e);
+				enqueueSnackbar(e, {variant: 'error'});
 			});
 	};
+
+	//eslint-disable-next-line react-hooks/exhaustive-deps
 	useEffect(reload, []);
 
 	return identity ? <Card>

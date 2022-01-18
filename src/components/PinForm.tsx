@@ -1,6 +1,5 @@
 import SaveIcon from '@mui/icons-material/Save';
-import {IconButton} from '@mui/material';
-import {useSnackbar} from 'notistack';
+import {IconButton, TextField} from '@mui/material';
 import {useState} from 'react';
 
 export interface PinFormProps {
@@ -21,11 +20,17 @@ export const PinForm = (props: PinFormProps) => {
 
 
 	return <div>
-		Cid*:
-		<input onChange={(e) => setCid(e.target.value)} value={cid}/>
+		<TextField
+			value={cid}
+			onChange={(e) => setCid(e.target.value)}
+			label={'Cid*'}
+		/>
 		<br/>
-		Name:
-		<input onChange={(e) => setName(e.target.value)} value={name}/>
+		<TextField
+			value={name}
+			onChange={(e) => setName(e.target.value)}
+			label={'Name'}
+		/>
 		<br/>
 		<IconButton onClick={submit}><SaveIcon/></IconButton>
 	</div>;

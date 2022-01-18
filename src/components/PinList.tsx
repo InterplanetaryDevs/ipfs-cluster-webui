@@ -8,7 +8,7 @@ import {
 	CardContent,
 	CardHeader,
 	CircularProgress,
-	IconButton,
+	IconButton, Skeleton,
 	Table,
 	TableBody,
 	TableCell,
@@ -50,7 +50,8 @@ export const PinList = (props: any) => {
 				<IconButton onClick={reload}><ReplayIcon/></IconButton>
 			</CardActions>
 			<CardContent style={{overflow: 'auto'}}>
-				<Table width={'100%'}>
+				{isLoading ? <Skeleton variant="rectangular" width={'100%'} height={(pins.length + 1) * 50} /> :
+					<Table width={'100%'}>
 					<TableHead>
 						<TableRow>
 							<TableCell>Name</TableCell>
@@ -60,7 +61,7 @@ export const PinList = (props: any) => {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{isLoading ? <CircularProgress/> : pins.map((pin, k) => <TableRow key={k}>
+						{pins.map((pin, k) => <TableRow key={k}>
 							<TableCell align={'center'}>{pin.name && pin.name !== '' ? pin.name : '-'}</TableCell>
 							<TableCell>{pin.cid['/']}</TableCell>
 							<TableCell>
@@ -89,7 +90,7 @@ export const PinList = (props: any) => {
 							</TableCell>
 						</TableRow>)}
 					</TableBody>
-				</Table>
+				</Table>}
 			</CardContent>
 		</Card>
 		<PinDialog

@@ -32,6 +32,7 @@ export const PinDialog = (props: PinDialogProps) => {
 		<DialogTitle>Edit Pin</DialogTitle>
 		<DialogContent>
 			Editing {props.pin?.cid['/']}
+			<div style={{height: 17}}/>
 			<PinForm
 				values={props.pin}
 				onSubmit={(pin) => {

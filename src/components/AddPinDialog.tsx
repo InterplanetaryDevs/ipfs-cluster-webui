@@ -7,10 +7,8 @@ export const AddPinDialog = (props: any) => {
 	const {enqueueSnackbar} = useSnackbar();
 	const api = useApi();
 
-	const addPin = (pin: any) => {
-		api.add(pin.cid, {
-			name: pin.name,
-		})
+	const addPin = ({cid, ...pin}: any) => {
+		api.add(cid, pin)
 			.then(r => {
 				enqueueSnackbar(`Pin Added`, {variant: 'success'});
 			})

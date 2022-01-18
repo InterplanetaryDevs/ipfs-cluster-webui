@@ -1,0 +1,52 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI/CD
+
+# Controls when the workflow will run
+on:
+  push:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+jobs:
+  sync:
+    name: Verify and sync data to IPFS
+    runs-on: ubuntu-latest
+    outputs:
+      cid: ${{ steps.upload.outputs.cidv1 }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate build artifact
+        run: CI=false npm run build
+
+      - name: Sync to IPFS
+        id: upload
+        uses: nymmrx/ipfs-deploy@master
+        with:
+          path: "./build"
+          pin-name: My Awesome Project
+          pinata-key: ${{ secrets.PINATA_KEY }}
+          pinata-secret: ${{ secrets.PINATA_SECRET }}
+          #cloudflare-zone-id: ${{ secrets.CLOUDFLARE_ZONE }}
+          #cloudflare-secret: ${{ secrets.CLOUDFLARE_SECRET }}
+          #record-domain: example.com
+          #record-name: _dnslink.app
+  dnslink:
+    name: Update dnslink record
+    runs-on: ubuntu-latest
+    needs: sync
+
+    steps:
+      - name: Update record
+        uses: undyingwraith/actions-duckdns-dnslink@master
+        with:
+          token: ${{ secrets.DUCKDNS_TOKEN }}
+          domain: cluster-webui
+          cid: ${{ needs.sync.outputs.cid }}

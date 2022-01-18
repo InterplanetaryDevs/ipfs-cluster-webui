@@ -1,11 +1,10 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {Accordion, AccordionDetails, AccordionSummary, CircularProgress, Typography} from '@mui/material';
-import {Cluster} from '@nftstorage/ipfs-cluster';
 import {SyntheticEvent, useEffect, useState} from 'react';
 import {useApi} from '../context/ApiContext';
 import {useLoading} from '../hooks/UseLoading';
 
-export const PeerMap = (props: { cid: string, cluster: Cluster }) => {
+export const PeerMap = (props: { cid: string }) => {
 	const [expanded, setExpanded] = useState<string | false>(false);
 	const [status, setStatus] = useState<any>();
 	const [isLoading, load] = useLoading();

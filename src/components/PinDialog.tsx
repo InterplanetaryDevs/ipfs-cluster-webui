@@ -1,5 +1,4 @@
 import {Dialog, DialogContent, DialogTitle} from '@mui/material';
-import {Cluster} from '@nftstorage/ipfs-cluster';
 import {useSnackbar} from 'notistack';
 import {useApi} from '../context/ApiContext';
 import {PinType} from '../types/PinType';
@@ -8,7 +7,6 @@ import {PinForm} from './PinForm';
 export interface PinDialogProps {
 	pin?: PinType;
 	onClose?: () => void;
-	cluster: Cluster;
 }
 
 export const PinDialog = (props: PinDialogProps) => {

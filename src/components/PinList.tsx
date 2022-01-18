@@ -34,7 +34,6 @@ export const PinList = (props: any) => {
 		load(api.getList())
 			.then(r => {
 				setPins(r);
-				console.log(r);
 			})
 			.catch(e => {
 				enqueueSnackbar(`Error: ${e}`, {variant:'error'})
@@ -66,7 +65,7 @@ export const PinList = (props: any) => {
 							<TableCell>{pin.cid['/']}</TableCell>
 							<TableCell>
 								{/*{JSON.stringify(pin)}*/}
-								<PeerMap cid={pin.cid['/']} cluster={props.cluster}/>
+								<PeerMap cid={pin.cid['/']}/>
 							</TableCell>
 							<TableCell>
 								<ButtonGroup variant={'outlined'}>
@@ -96,7 +95,6 @@ export const PinList = (props: any) => {
 		<PinDialog
 			onClose={() => setEditing(undefined)}
 			pin={editing}
-			cluster={props.cluster}
 		/>
 	</>;
 };

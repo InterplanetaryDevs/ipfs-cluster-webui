@@ -7,7 +7,7 @@ export class ApiService implements IApiContext {
 
 	constructor() {
 		this.api = axios.create({
-			baseURL: 'http://localhost:9094/',
+			baseURL: localStorage.getItem('apiUrl') ?? 'http://localhost:9094',
 		});
 	}
 
@@ -16,6 +16,7 @@ export class ApiService implements IApiContext {
 	}
 
 	set apiUrl(url: string) {
+		localStorage.setItem('apiUrl', url);
 		this.api = axios.create({
 			baseURL: url,
 		});

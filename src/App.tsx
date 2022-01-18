@@ -1,12 +1,18 @@
-import {AppBar, Container, Tab, Tabs, Toolbar} from '@mui/material';
+import {AppBar, ButtonGroup, Container, IconButton, Tab, Tabs, TextField, Toolbar} from '@mui/material';
 import React, {useState} from 'react';
 import {AddPinDialog} from './components/AddPinDialog';
 import {IdentityDisplay} from './components/IdentityDisplay';
 import {PeerList} from './components/PeerList';
 import {PinList} from './components/PinList';
+import {useApi} from './context/ApiContext';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 
 function App() {
+	const api = useApi();
+
 	const [tab, setTab] = useState(0);
+	const [apiUrl, setApiUrl] = useState(api.apiUrl);
 
 	return <div>
 		<AppBar>
@@ -17,14 +23,36 @@ function App() {
 						<Tab label={'Peers'}/>
 						<Tab label={'Identity'}/>
 					</Tabs>
+					<div style={{flexGrow: 1}}/>
+					<div>
+						<TextField
+							value={apiUrl}
+							onChange={(e) => setApiUrl(e.target.value)}
+							label={'Api url'}
+							size={'small'}
+						/>
+						{api.apiUrl !== apiUrl && <ButtonGroup>
+                            <IconButton
+                                onClick={() => setApiUrl(api.apiUrl)}
+                            ><CloseIcon/></IconButton>
+                            <IconButton
+                                onClick={() => {
+									api.apiUrl = apiUrl;
+									//set state twice to reload
+									setApiUrl('')
+									setTimeout(() => setApiUrl(api.apiUrl), 0)
+								}}
+                            ><CheckIcon/></IconButton>
+                        </ButtonGroup>}
+					</div>
 				</Toolbar>
 			</Container>
 		</AppBar>
-		<div style={{height: 80}} />
+		<div style={{height: 80}}/>
 		<Container>
 			<TabPanel index={0} value={tab}>
 				<AddPinDialog/>
-				<div style={{height: 15}} />
+				<div style={{height: 15}}/>
 				<PinList/>
 			</TabPanel>
 			<TabPanel index={1} value={tab}>
@@ -34,7 +62,7 @@ function App() {
 				<IdentityDisplay/>
 			</TabPanel>
 		</Container>
-		<div style={{height: 15}} />
+		<div style={{height: 15}}/>
 	</div>;
 }
 

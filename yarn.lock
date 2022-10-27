@@ -5536,7 +5536,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:^3.0.0, debug@npm:^3.1.1":
+"debug@npm:^3.1.1":
   version: 3.2.6
   resolution: "debug@npm:3.2.6"
   dependencies:
@@ -6855,16 +6855,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.0.0":
-  version: 1.10.0
-  resolution: "follow-redirects@npm:1.10.0"
-  dependencies:
-    debug: ^3.0.0
-  checksum: 02865fcd49f189194a33a56a2124617ffd82db91a3eb2371de359e5e9225cc1b16e15c8c1b276abd71c174eccc3be24d8f217fd96955a5f170c48f0fa10a1195
-  languageName: node
-  linkType: hard
-
-"follow-redirects@npm:^1.15.0":
+"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.15.0":
   version: 1.15.2
   resolution: "follow-redirects@npm:1.15.2"
   peerDependenciesMeta:

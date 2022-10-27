@@ -1,5 +1,6 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import InfoIcon from '@mui/icons-material/Info';
 import ReplayIcon from '@mui/icons-material/Replay';
 import {
 	ButtonGroup,
@@ -7,8 +8,9 @@ import {
 	CardActions,
 	CardContent,
 	CardHeader,
-	CircularProgress,
-	IconButton, Skeleton,
+	IconButton,
+	Skeleton,
+	Stack,
 	Table,
 	TableBody,
 	TableCell,
@@ -18,16 +20,17 @@ import {
 import {useSnackbar} from 'notistack';
 import {useEffect, useState} from 'react';
 import {useApi} from '../context/ApiContext';
-import {PeerMap} from './PeerMap';
-import {PinDialog} from './PinDialog';
 import {useLoading} from '../hooks/UseLoading';
+import {PinDetailPopup} from './PinDetailPopup';
+import {PinDialog} from './PinDialog';
 
 export const PinList = (props: any) => {
 	const [pins, setPins] = useState<any[]>([]);
 	const [editing, setEditing] = useState<any>();
+	const [detail, setDetail] = useState<string>();
 
-	const {enqueueSnackbar} = useSnackbar()
-	const api = useApi()
+	const {enqueueSnackbar} = useSnackbar();
+	const api = useApi();
 	const [isLoading, load] = useLoading();
 
 	const reload = () => {
@@ -36,7 +39,7 @@ export const PinList = (props: any) => {
 				setPins(r);
 			})
 			.catch(e => {
-				enqueueSnackbar(`Error: ${e}`, {variant:'error'})
+				enqueueSnackbar(`Error: ${e}`, {variant: 'error'});
 			});
 	};
 
@@ -50,52 +53,60 @@ export const PinList = (props: any) => {
 				<IconButton onClick={reload}><ReplayIcon/></IconButton>
 			</CardActions>
 			<CardContent style={{overflow: 'auto'}}>
-				{isLoading ? <Skeleton variant="rectangular" width={'100%'} height={(pins.length + 1) * 50} /> :
+				{isLoading ? <Stack spacing={1}>
+						<Skeleton variant="rectangular" width={'100%'} height={35}/>
+						<Skeleton variant="rectangular" width={'100%'} height={45}/>
+						{pins.map((p, k) => <Skeleton key={k} variant="rectangular" width={'100%'} height={45}/>)}
+					</Stack> :
 					<Table width={'100%'}>
-					<TableHead>
-						<TableRow>
-							<TableCell>Name</TableCell>
-							<TableCell>Cid</TableCell>
-							<TableCell>Peers</TableCell>
-							<TableCell>Actions</TableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{pins.map((pin, k) => <TableRow key={k}>
-							<TableCell align={'center'}>{pin.name && pin.name !== '' ? pin.name : '-'}</TableCell>
-							<TableCell>{pin.cid['/']}</TableCell>
-							<TableCell>
-								{/*{JSON.stringify(pin)}*/}
-								<PeerMap cid={pin.cid['/']}/>
-							</TableCell>
-							<TableCell>
-								<ButtonGroup variant={'outlined'}>
-									<IconButton
-										color={'error'}
-										onClick={() => {
-											load(api.remove(pin.cid['/']))
-												.then(() => {
-													console.log('deleted');
-													return reload();
-												})
-												.catch(console.error);
-										}}
-									><DeleteIcon/></IconButton>
-									<IconButton
-										onClick={() => {
-											setEditing(pin);
-										}}
-									><EditIcon/></IconButton>
-								</ButtonGroup>
-							</TableCell>
-						</TableRow>)}
-					</TableBody>
-				</Table>}
+						<TableHead>
+							<TableRow>
+								<TableCell>Name</TableCell>
+								<TableCell>Cid</TableCell>
+								<TableCell>Actions</TableCell>
+							</TableRow>
+						</TableHead>
+						<TableBody>
+							{pins.map((pin, k) => <TableRow key={k}>
+								<TableCell align={'center'}>{pin.name && pin.name !== '' ? pin.name : '-'}</TableCell>
+								<TableCell>{pin.cid['/']}</TableCell>
+								<TableCell>
+									<ButtonGroup variant={'outlined'}>
+										<IconButton
+											onClick={() => {
+												setDetail(pin.cid['/']);
+											}}
+										><InfoIcon/></IconButton>
+										<IconButton
+											onClick={() => {
+												setEditing(pin);
+											}}
+										><EditIcon/></IconButton>
+										<IconButton
+											color={'error'}
+											onClick={() => {
+												load(api.remove(pin.cid['/']))
+													.then(() => {
+														console.log('deleted');
+														return reload();
+													})
+													.catch(console.error);
+											}}
+										><DeleteIcon/></IconButton>
+									</ButtonGroup>
+								</TableCell>
+							</TableRow>)}
+						</TableBody>
+					</Table>}
 			</CardContent>
 		</Card>
 		<PinDialog
 			onClose={() => setEditing(undefined)}
 			pin={editing}
+		/>
+		<PinDetailPopup
+			onClose={() => setDetail(undefined)}
+			cid={detail}
 		/>
 	</>;
 };

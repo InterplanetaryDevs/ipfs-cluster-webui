@@ -1,6 +1,7 @@
 import {Dialog, DialogContent, DialogTitle} from '@mui/material';
 import {useSnackbar} from 'notistack';
 import {useApi} from '../context/ApiContext';
+import {PinOptions} from '../types/PinOptions';
 import {PinType} from '../types/PinType';
 import {PinForm} from './PinForm';
 
@@ -11,17 +12,17 @@ export interface PinDialogProps {
 
 export const PinDialog = (props: PinDialogProps) => {
 	const {enqueueSnackbar} = useSnackbar();
-	const api = useApi()
+	const api = useApi().api;
 
-	const updatePin = (pin: any) => {
+	const updatePin = (pin: PinOptions) => {
 		const {cid, ...pinOptions} = pin;
-		api.update(props.pin?.cid['/'], cid, pinOptions)
+		api.pins.update(props.pin?.cid['/'], cid, pinOptions)
 			.then(r => {
 				props.onClose && props.onClose();
-				enqueueSnackbar(`Pin updated`, {variant: 'success'})
+				enqueueSnackbar(`Pin updated`, {variant: 'success'});
 			})
 			.catch(e => {
-				enqueueSnackbar(`Error: ${e}`, {variant: 'error'})
+				enqueueSnackbar(`Error: ${e}`, {variant: 'error'});
 			});
 	};
 

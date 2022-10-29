@@ -22,8 +22,8 @@ export class IpfsPinsApi {
 		return this.api.post(`/pins/ipfs/${cid}?${mapOptions(options)}`);
 	}
 
-	public remove(cid: string) {
-
+	public remove(cid: string): Promise<any> {
+		return this.api.delete(`/pins/${cid}`).then(r => r.data);
 	}
 
 	public recover(cid?: string) {

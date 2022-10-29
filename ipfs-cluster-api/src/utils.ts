@@ -3,7 +3,7 @@ export function mapOptions(options?: object): string {
 
 	const parts: string[] = [];
 	for (const key of Object.keys(options)) {
-		parts.push(mapOptionName(key) + '=' + options[key]);
+		parts.push(mapOptionName(key) + '=' + (options as any)[key].toString());
 	}
 	return parts.join('&');
 }

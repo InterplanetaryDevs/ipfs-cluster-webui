@@ -6,7 +6,6 @@ import {viteCommonjs} from '@originjs/vite-plugin-commonjs';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  root: './src',
   resolve: {
     alias: [
       {
@@ -37,7 +36,7 @@ export default defineConfig({
   ],
   build: {
     assetsDir: './assets',
-    outDir: '../build',
+    outDir: './build',
     rollupOptions: {}
   }
 })

@@ -6,7 +6,7 @@ function mapOptions(options) {
         return '';
     const parts = [];
     for (const key of Object.keys(options)) {
-        parts.push(mapOptionName(key) + '=' + options[key]);
+        parts.push(mapOptionName(key) + '=' + options[key].toString());
     }
     return parts.join('&');
 }

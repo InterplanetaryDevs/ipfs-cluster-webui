@@ -14,7 +14,7 @@ jobs:
     name: Verify and sync data to IPFS
     runs-on: ubuntu-latest
     outputs:
-      cid: ${{ steps.upload.outputs.cidv1 }}
+      cid: ${{ steps.upload-client.outputs.cidv1 }}
 
     steps:
       - name: Checkout repo
@@ -34,6 +34,18 @@ jobs:
         uses: nymmrx/ipfs-deploy@master
         with:
           path: "./client/build"
+          pin-name: My Awesome Project
+          pinata-key: ${{ secrets.PINATA_KEY }}
+          pinata-secret: ${{ secrets.PINATA_SECRET }}
+          #cloudflare-zone-id: ${{ secrets.CLOUDFLARE_ZONE }}
+          #cloudflare-secret: ${{ secrets.CLOUDFLARE_SECRET }}
+          #record-domain: example.com
+          #record-name: _dnslink.app
+      - name: Sync to IPFS
+        id: upload-lib
+        uses: nymmrx/ipfs-deploy@master
+        with:
+          path: "./ipfs-cluster-api/dist"
           pin-name: My Awesome Project
           pinata-key: ${{ secrets.PINATA_KEY }}
           pinata-secret: ${{ secrets.PINATA_SECRET }}

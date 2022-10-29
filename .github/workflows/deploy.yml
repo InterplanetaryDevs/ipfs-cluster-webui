@@ -20,17 +20,32 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
 
+      - name: Install yarn
+        run: npm install -g corepack
+
       - name: Install dependencies
-        run: npm install
+        run: yarn install
 
       - name: Generate build artifact
-        run: CI=false npm run build
+        run: CI=false yarn run build
 
       - name: Sync to IPFS
-        id: upload
+        id: upload-client
         uses: nymmrx/ipfs-deploy@master
         with:
-          path: "./build"
+          path: "./client/build"
+          pin-name: My Awesome Project
+          pinata-key: ${{ secrets.PINATA_KEY }}
+          pinata-secret: ${{ secrets.PINATA_SECRET }}
+          #cloudflare-zone-id: ${{ secrets.CLOUDFLARE_ZONE }}
+          #cloudflare-secret: ${{ secrets.CLOUDFLARE_SECRET }}
+          #record-domain: example.com
+          #record-name: _dnslink.app
+      - name: Sync to IPFS
+        id: upload-lib
+        uses: nymmrx/ipfs-deploy@master
+        with:
+          path: "./ipfs-cluster-api/build"
           pin-name: My Awesome Project
           pinata-key: ${{ secrets.PINATA_KEY }}
           pinata-secret: ${{ secrets.PINATA_SECRET }}

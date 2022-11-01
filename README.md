@@ -1,3 +1,6 @@
+# Archived!
+This is now included in [IPFS Toolbox](https://github.com/InterplanetaryDevs/ipfs-toolbox)
+
 # IPFS Cluster WebUI
 
 This is a web ui for `ipfs-cluster-service`.
